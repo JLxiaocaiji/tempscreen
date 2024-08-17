@@ -1,0 +1,83 @@
+<template>
+  <div>
+    <div class="title">{{ title }}</div>
+    <a-card>
+      <template #title><span class="title">{{ data }}</span></template>
+      <slot />
+    </a-card>
+  </div>
+</template>
+
+<script lang="ts" setup>
+const props = defineProps<{
+  title?: String
+  data?: String
+}>()
+</script>
+
+<style lang="less" scoped>
+.ant-card {
+  width: 380px;
+  height: 250px;
+  padding: 4px;
+  overflow: hidden;
+  background: url("@/assets/images/cardBg.png") 0 0 / 100% 100% no-repeat;
+  // cursor: pointer;
+  border-radius: 4px;
+
+  .title {
+    background: linear-gradient(0deg, rgba(122, 200, 255, 0.7), hsla(0, 0%, 100%, 0.7));
+    color: #abdcff;
+    // 延申到 text
+    -webkit-background-clip: text;
+    // 渐变
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+  }
+
+  :deep(&-head) {
+    border-bottom: unset;
+    height: 50px;
+    & > .ant-tabs > .ant-tabs-nav {
+      margin-bottom: -10px;
+      height: 35px;
+      .ant-tabs-nav-wrap {
+        width: 100%;
+        .ant-tabs-nav-list {
+          width: 100%;
+          justify-content: space-around;
+          color: #fff;
+        }
+      }
+    }
+
+    &-wrapper {
+      height: 25px;
+    }
+  }
+
+  :deep(&-body) {
+    padding: unset;
+  }
+
+  a {
+    color: #4cadf1;
+    float: right;
+    margin-right: 29px;
+    margin-top: 5px;
+    font-size: 14px;
+  }
+
+  :deep(.ant-select-selector) {
+    background: transparent;
+    border: 1px solid transparent;
+  }
+
+  // 多项横纵分割
+  .device-stat {
+    display: grid;
+    grid-template-columns: 190px 190px;
+    grid-template-rows: 90px 90px;
+  }
+}
+</style>
