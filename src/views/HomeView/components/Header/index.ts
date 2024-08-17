@@ -1,5 +1,5 @@
 import { reactive } from 'vue'
-import type { HeaderItem } from './index.d'
+import type { HeaderItem } from '@/types'
 
 export const list1 = reactive<HeaderItem[]>([
   { label: '首页', value: '1', url: '/bigScreen/homePage' },

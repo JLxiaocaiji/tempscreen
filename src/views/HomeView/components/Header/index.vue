@@ -1,10 +1,12 @@
 <template>
-  <div class="h-left">
-    <HeaderBottom :itemList="list1" />
-  </div>
-    <div class="">智慧环保岛系统</div>
-  <div class="h-right">
-    <HeaderBottom :itemList="list2" />
+  <div class="header">
+    <div class="header-left">
+      <HeaderBottom :itemList="list1" position="left" />
+    </div>
+    <div class="header-center">智慧环保岛系统</div>
+    <div class="header-right">
+      <HeaderBottom :itemList="list2" position="right" />
+    </div>
   </div>
 </template>
 
@@ -14,11 +16,20 @@ import HeaderBottom from './HeaderBottom.vue'
 </script>
 
 <style lang="less" scoped>
-.h-left {
-  margin-left: 45px;
-}
-
-.h-right {
-  margin-right: 70px;
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  &-left {
+    flex: 1;
+  }
+  &-center {
+    width: 300px;
+    text-align: center;
+  }
+  &-right {
+    flex: 1
+    // margin-right: 70px;
+  }
 }
 </style>

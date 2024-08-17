@@ -1,8 +1,10 @@
 <template>
-  <div>
+  <div class="card">
     <div class="title">{{ title }}</div>
-    <a-card>
-      <template #title><span class="title">{{ data }}</span></template>
+    <a-card :tab-list="tabList">
+      <template #title
+        ><span class="title">{{ data }}</span></template
+      >
       <slot />
     </a-card>
   </div>
@@ -12,16 +14,23 @@
 const props = defineProps<{
   title?: String
   data?: String
+  tabList?: any
 }>()
 </script>
 
 <style lang="less" scoped>
+.title {
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+}
+
 .ant-card {
-  width: 380px;
-  height: 250px;
+  width: 100%;
+  min-height: 250px;
   padding: 4px;
   overflow: hidden;
-  background: url("@/assets/images/cardBg.png") 0 0 / 100% 100% no-repeat;
+  background: url('@/assets/images/cardBg.png') 0 0 / 100% 100% no-repeat;
   // cursor: pointer;
   border-radius: 4px;
 
