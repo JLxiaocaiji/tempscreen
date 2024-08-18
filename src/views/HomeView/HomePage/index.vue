@@ -2,15 +2,15 @@
   <div class="chart">
     <div class="chart-left">
       <Card title="参数监测">
-        <div style="display: flex; justify-content: space-around; margin: 10px 0 10px">
-          <Tag v-for="item in list.slice(0, 3)" :key="item.describe" :profile="item" />
+        <div style="display: grid; grid-template-columns: 1fr 1fr">
+          <Tag v-for="item in list.slice(0, 4)" :key="item.describe" :profile="item" />
         </div>
       </Card>
       <Card title="调控方案"></Card>
       <Card title="报警记录" :tab-list="tabList">
         <dv-scroll-board
           :config="config"
-          style="width: 100%; height: 170px; margin: 10px 1px 0px 5px"
+          style="width: 100%; height: 170px; margin: 10px 1px 0px 5px; padding: 1px 10px 0 0"
         />
       </Card>
     </div>
@@ -18,20 +18,26 @@
       <div class="profile"><Tag v-for="item in list" :key="item.describe" :profile="item" /></div>
       <div class="declare"><span>实时曲线</span></div>
       <div class="detail-chart">
-        <Card title="原烟气烟尘"><LineChart :data="lineData" /> </Card>
-        <Card title="净烟气烟尘"><LineChart :data="lineData" /></Card>
-        <Card title="原烟气SO2浓度"><LineChart :data="lineData" /></Card>
-        <Card title="净烟气SO2浓度"><LineChart :data="lineData" /></Card>
-        <Card title="原烟气NOx浓度"><LineChart :data="lineData" /></Card>
-        <Card title="净烟气NOx浓度"><LineChart :data="lineData" /></Card>
-        <Card title="原烟气CO浓度"><LineChart :data="lineData" /></Card>
-        <Card title="净烟气CO浓度"><LineChart :data="lineData" /></Card>
+        <Card title="原烟气烟尘" data="simulatedData"><LineChart :data="lineData" /> </Card>
+        <Card title="净烟气烟尘" data="simulatedData"><LineChart :data="lineData" /></Card>
+        <Card title="原烟气SO2浓度" data="simulatedData"><LineChart :data="lineData" /></Card>
+        <Card title="净烟气SO2浓度" data="simulatedData"><LineChart :data="lineData" /></Card>
+        <Card title="原烟气NOx浓度" data="simulatedData"><LineChart :data="lineData" /></Card>
+        <Card title="净烟气NOx浓度" data="simulatedData"><LineChart :data="lineData" /></Card>
+        <Card title="原烟气CO浓度" data="simulatedData"><LineChart :data="lineData" /></Card>
+        <Card title="净烟气CO浓度" data="simulatedData"><LineChart :data="lineData" /></Card>
       </div>
     </div>
     <div class="chart-right">
-      <Card title="除尘健康状态-高压"></Card>
-      <Card title="除尘健康状态-低压"></Card>
-      <Card title="粉尘比电阻"></Card>
+      <Card title="除尘健康状态-高压">
+        <PieChart :data="pieChartData" />
+      </Card>
+      <Card title="除尘健康状态-低压">
+        <PieChart :data="pieChartData" />
+      </Card>
+      <Card title="粉尘比电阻">
+        <BarChart />
+      </Card>
     </div>
   </div>
 </template>
@@ -40,9 +46,12 @@
 import Card from '@/components/Card.vue'
 import Tag from '@/components/Tag.vue'
 import { list } from './index'
+import * as echarts from 'echarts'
 import type { EChartsOption } from 'echarts'
 import { reactive } from 'vue'
 import LineChart from '@/components/chart/LineChart.vue'
+import PieChart from '@/components/chart/PieChart.vue'
+import BarChart from '@/components/chart/BarChart.vue'
 
 const tabList = [
   {
@@ -70,66 +79,141 @@ const config = {
   ],
   // index: true,
   columnWidth: [200, 200],
-  align: ['center'],
+  align: ['center', 'center'],
   rowNum: 7,
-  waitTime: 1000,
+  waitTime: 100000,
   oddRowBGC: '#84b2d8',
   evenRowBGC: '#919EA8'
 }
 
 const lineData: EChartsOption = reactive({
-  legend: {
-    //   textStyle: {
-    //     color: "#fff",
-    //   },
-    show: false
-  },
+  // legend: {
+  //   data: ['simulatedData'],
+  //   right: '10%',
+  //   textStyle: {
+  //     color: '#fff'
+  //   }
+  // },
+
   xAxis: {
-    data: [
-      '2024-05-08',
-      '2024-05-09',
-      '2024-05-10',
-      '2024-05-11',
-      '2024-05-12',
-      '2024-05-13',
-      '2024-05-14'
-    ]
+    // data: ['08-09', '08-10', '08-11', '08-12', '08-13', '08-14', '08-15', '08-16', '08-17', '08-18']
+    data: Array.from({ length: 10 }, (val, i) => i)
   },
-  yAxis: {
-    min: 'dataMin',
-    max: 'dataMax'
-  },
+  yAxis: { min: 0, max: 35 },
+
   series: [
     {
-      name: '设备总数',
+      name: 'simulatedData',
       type: 'line',
       smooth: true,
-      data: [61176, 61176, 61176, 61176, 61176, 61176, 61176],
-      itemStyle: { color: '#33747d' }
-    },
-    {
-      name: '被监听设备总数',
-      type: 'line',
-      smooth: true,
-      data: [18561, 18561, 18561, 18561, 18561, 18561, 18561],
-      itemStyle: { color: '#1562b4' }
-    },
-    {
-      name: '在线设备数',
-      type: 'line',
-      smooth: true,
-      data: [61273, 61273, 61273, 61273, 61273, 61273, 61273],
-      itemStyle: { color: '#4fc96e' }
-    },
-    {
-      name: '异常设备数',
-      type: 'line',
-      smooth: true,
-      data: [8472, 8472, 8472, 8472, 8472, 8472, 8472],
-      itemStyle: { color: '#E4E70C' }
+      lineStyle: {
+        width: 2,
+        color: 'RGBA(74, 155, 254, 1)'
+      },
+      areaStyle: {
+        normal: {
+          color: new echarts.graphic.LinearGradient(
+            0,
+            0,
+            0,
+            1,
+            [
+              {
+                offset: 0,
+                color: 'RGBA(74, 155, 254, 1)'
+              },
+              {
+                offset: 1,
+                color: 'RGBA(74, 155, 254, 0.2)'
+              }
+            ],
+            false
+          ),
+          shadowColor: 'RGBA(74, 155, 254, 0.2)',
+          shadowBlur: 20
+        }
+      },
+      data: Array.from({ length: 10 }, () => Math.floor(Math.random() * 25)),
+      itemStyle: { color: 'RGBA(74, 155, 254, 1)' }
     }
   ]
 })
+
+const pieChartData = reactive({
+  data: [
+    { value: 20, name: '运行', itemStyle: { color: 'rgb(84, 216, 135)' } },
+    { value: 30, name: '停止', itemStyle: { color: 'rgb(148, 218, 250)' } },
+    { value: 30, name: '报警', itemStyle: { color: '#51b7ff' } }
+  ]
+})
+
+// const barData = reactive({
+//   xAxis: {
+//     // data: ['08-09', '08-10', '08-11', '08-12', '08-13', '08-14', '08-15', '08-16', '08-17', '08-18']
+//     data: Array.from({ length: 10 }, (val, i) => i)
+//   },
+//   yAxis: { min: 0, max: 35 },
+
+//   series: [
+//     {
+//       name: '',
+//       type: 'custom',
+//       smooth: true,
+//       lineStyle: {
+//         width: 2,
+//         color: 'RGBA(74, 155, 254, 1)'
+//       },
+//       xAxis: {
+//         type: 'category',
+//         data: ['星期一', '星期一', '星期一', '星期一', '星期一'],
+//         axisLine: {
+//             show: false,
+//         },
+//         offset: 10,
+
+//         axisTick: {
+//             show: false,
+//         },
+//         axisLabel: {
+//             show: true,
+//             color: '#fff',
+//             fontSize: 16,
+//             align: 'left'
+//         },
+//     },
+//     yAxis: {
+//         min: 0,
+//         max: 100,
+//         interval: 20,
+//         type: 'value',
+//         axisLine: {
+//             show: true,
+//             lineStyle: {
+//                 color: 'rgba(255, 255, 255, .16)'
+//             }
+//         },
+//         splitLine: {
+//             show: true,
+//             lineStyle: {
+//                 type: "dashed",
+//                 color: 'rgba(255, 255, 255, .16)'
+//             },
+//         },
+//         axisTick: {
+//             show: false,
+
+//         },
+//         axisLabel: {
+//             show: true,
+//             fontSize: 16,
+//             color: '#fff'
+
+//         },
+//     },
+
+//     }
+//   ]
+// })
 </script>
 
 <style lang="less" scoped>

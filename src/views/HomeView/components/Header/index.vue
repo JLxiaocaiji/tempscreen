@@ -28,7 +28,7 @@ import HeaderBottom from './HeaderBottom.vue'
     text-align: center;
   }
   &-right {
-    flex: 1
+    flex: 1;
     // margin-right: 70px;
   }
 }

@@ -3,7 +3,7 @@
     <div class="title">{{ title }}</div>
     <a-card :tab-list="tabList">
       <template #title
-        ><span class="title">{{ data }}</span></template
+        ><span class="data">{{ data }}</span></template
       >
       <slot />
     </a-card>
@@ -34,9 +34,14 @@ const props = defineProps<{
   // cursor: pointer;
   border-radius: 4px;
 
-  .title {
+  :deep(&-head-title) {
+    text-align: center;
+  }
+
+  .data {
     background: linear-gradient(0deg, rgba(122, 200, 255, 0.7), hsla(0, 0%, 100%, 0.7));
     color: #abdcff;
+    text-align: center;
     // 延申到 text
     -webkit-background-clip: text;
     // 渐变
